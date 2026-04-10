@@ -103,12 +103,32 @@ function updateCountryResults(){
     
 }
 
+// Fetch all country data and kicks off the display country data 
+
 async function fetchCountries() {
     const response = await fetch('data.json') // Stores Whatever comes back
     const data = await response.json() // Should convert the response into a array
-
+  // Saves the full country list to the global array
     allCountries = data
-
+// pass the data to display Countries and should build and render the cards
     displayCountries(data)
     
+}
+
+
+// Takes filtered searched array and renders card to the page 
+function displayCountries(countriesData){
+
+    // clears cards that was on the page 
+    countryListContainer.innerHTML = ''
+
+    //loop through every country in the array 
+    countriesData.forEach(country => {
+
+        // Create a new button element in the dom
+
+
+    })
+
+
 }
