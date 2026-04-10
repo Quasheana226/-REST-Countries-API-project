@@ -102,3 +102,13 @@ function updateCountryResults(){
     displayCountries(searchTermResults)
     
 }
+
+async function fetchCountries() {
+    const response = await fetch('data.json') // Stores Whatever comes back
+    const data = await response.json() // Should convert the response into a array
+
+    allCountries = data
+
+    displayCountries(data)
+    
+}
