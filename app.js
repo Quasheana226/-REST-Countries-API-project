@@ -11,27 +11,27 @@ const darkModebtn = document.getElementById('dark-mode-btn')
 const currentTheme = localStorage.getItem('theme')
 
 // If a saved theme is saved then its apply autimatically on the load of the page 
-if( currentTheme){
+if (currentTheme) {
     document.documentElement.setAttribute('data-theme', currentTheme)
 
     //If  saved theme is dark then update button to match
-    if(currentTheme === 'dark'){
+    if (currentTheme === 'dark') {
         darkModebtn.innerHTML = 'Light Mode'
     }
 
 }
 // Click on the dark mode button
 darkModebtn.addEventListener('click', () => {
-    
+
     // Theme is currently Active 
     const currentTheme = document.documentElement.getAttribute('data-theme')
 
-    
-    if(currentTheme === 'dark') {
+
+    if (currentTheme === 'dark') {
         document.documentElement.removeAttribute('data-theme') // removing theme
         darkModebtn.innerHTML = 'Dark mode'.  // Update button text
 
-        localStorage.setItem('theme', 'light') // save 
+            localStorage.setItem('theme', 'light') // save 
     } else {
         document.documentElement.setAttribute('data-theme', 'dark')
         darkModebtn.innerHTML = 'Light Mode'
@@ -41,57 +41,57 @@ darkModebtn.addEventListener('click', () => {
 // Country List And Search Logic
 
 // Div container for what country will be displayed 
- const  countryListContainer = document.getElementById('country-container')
+const countryListContainer = document.getElementById('country-container')
 
- // search bar input 
- const searchInput = document.getElementById('region-input')
+// search bar input 
+const searchInput = document.getElementById('region-input')
 
- // Region dropwon
- const filteRegionDropdown = document.getElementById('search-filter')
+// Region dropwon
+const filteRegionDropdown = document.getElementById('search-filter')
 
- // Array will hold all countries fetched from Api
+// Array will hold all countries fetched from Api
 // Stored here so they can be filtered with out a new api call
- let allCountries = []
+let allCountries = []
 
 
- //Re-run the filter function everytime the user types in box 
- searchInput.addEventListener('input', updateCountryResults)
+//Re-run the filter function everytime the user types in box 
+searchInput.addEventListener('input', updateCountryResults)
 
- //Re-run the  filter function everytime the user picks a differnt region
- filteRegionDropdown.addEventListener('change', updateCountryResults)
+//Re-run the  filter function everytime the user picks a differnt region
+filteRegionDropdown.addEventListener('change', updateCountryResults)
 
 
- //Should Read the search bar  value Lowercase and remove spaces in the search bar 
- function getsearchInput() {
+//Should Read the search bar  value Lowercase and remove spaces in the search bar 
+function getsearchInput() {
     return searchInput.value.toLowerCase().trim()
- }
+}
 // Gets the value in the region dropdown
- function getFilterInput(){
+function getFilterInput() {
     return filteRegionDropdown.value // Empty if none is selected
- }
+}
 
 
- // Searches the country by list by name 
- function searchResults(countryData, searchQuery){ // Country data  full array of countries to search through 
- // and Searchquery the letters or words the user typed in search bar 
+// Searches the country by list by name 
+function searchResults(countryData, searchQuery) { // Country data  full array of countries to search through 
+    // and Searchquery the letters or words the user typed in search bar 
 
     return countryData.filter(item => item.name.toLowerCase().includes(searchQuery))
- }
+}
 
 
- // Filter the country list by the regions 
- function filterResults(countryData, filterOption){// country data array of countries 
+// Filter the country list by the regions 
+function filterResults(countryData, filterOption) {// country data array of countries 
     //Filter option the region the users picks from the drop down
-    return countryData.filter(item => item.region.toLowerCase().includes(filterOption.toLowerCase().trim()) )
- }
+    return countryData.filter(item => item.region.toLowerCase().includes(filterOption.toLowerCase().trim()))
+}
 
 
- // Main function that runs every time the user types in the search bar or pick region
+// Main function that runs every time the user types in the search bar or pick region
 
-function updateCountryResults(){
+function updateCountryResults() {
     const searchTerm = getSearchInput() // user picked 
     const selectedFilter = getFilterInput() // region Picked
-// Full county list down by region
+    // Full county list down by region
     const filteredResults = filterResults(allCountries, selectedFilter)
 
 
@@ -100,7 +100,7 @@ function updateCountryResults(){
 
     // final results should render thekm as cards on the page 
     displayCountries(searchTermResults)
-    
+
 }
 
 // Fetch all country data and kicks off the display country data 
@@ -108,16 +108,16 @@ function updateCountryResults(){
 async function fetchCountries() {
     const response = await fetch('data.json') // Stores Whatever comes back
     const data = await response.json() // Should convert the response into a array
-  // Saves the full country list to the global array
+    // Saves the full country list to the global array
     allCountries = data
-// pass the data to display Countries and should build and render the cards
+    // pass the data to display Countries and should build and render the cards
     displayCountries(data)
-    
+
 }
 
 
 // Takes filtered searched array and renders card to the page 
-function displayCountries(countriesData){
+function displayCountries(countriesData) {
 
     // clears cards that was on the page 
     countryListContainer.innerHTML = ''
@@ -126,6 +126,15 @@ function displayCountries(countriesData){
     countriesData.forEach(country => {
 
         // Create a new button element in the dom
+        const countryItem = document.createElement('button')
+
+        countryItem classList.add('country-item')
+
+        //Real data value directy into the Html 
+        countryItem.innerHTML = `
+        <img src = '${country.flags.png}' alt  = 'Flag of ${country.name.common}'>
+        <div class = 'country-quick-info'>
+        <h2 class = 'country-name'>`
 
 
     })
