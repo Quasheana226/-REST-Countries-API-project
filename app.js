@@ -81,15 +81,24 @@ darkModebtn.addEventListener('click', () => {
 
  // Filter the country list by the regions 
  function filterResults(countryData, filterOption){// country data array of countries 
-    //Filter option
+    //Filter option the region the users picks from the drop down
     return countryData.filter(item => item.region.toLowerCase().includes(filterOption.toLowerCase().trim()) )
  }
 
-function updateCountryResults(){
-    const searchTerm = getSearchInput()
-    const selectedFilter = getFilterInput()
 
+ // Main function that runs every time the user types in the search bar or pick region
+
+function updateCountryResults(){
+    const searchTerm = getSearchInput() // user picked 
+    const selectedFilter = getFilterInput() // region Picked
+// Full county list down by region
     const filteredResults = filterResults(allCountries, selectedFilter)
+
+
+    // Narrow down those regions result by search term 
     const searchTermResults = searchResults(filteredResults, searchTerm)
+
+    // final results should render thekm as cards on the page 
+    displayCountries(searchTermResults)
     
 }
