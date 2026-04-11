@@ -29,25 +29,27 @@ darkModebtn.addEventListener('click', () => {
 
     if (currentTheme === 'dark') {
         document.documentElement.removeAttribute('data-theme') // removing theme
-        darkModebtn.innerHTML = 'Dark mode'.  // Update button text
+        darkModebtn.innerHTML = 'Dark mode' // Update button text
 
-            localStorage.setItem('theme', 'light') // save 
+        localStorage.setItem('theme', 'light') // save 
     } else {
         document.documentElement.setAttribute('data-theme', 'dark')
         darkModebtn.innerHTML = 'Light Mode'
         localStorage.setItem('theme', 'dark')
     }
 })
-// Country List And Search Logic
+
+
+// Country List And Search Logic//
 
 // Div container for what country will be displayed 
 const countryListContainer = document.getElementById('country-container')
 
 // search bar input 
-const searchInput = document.getElementById('region-input')
+const searchInput = document.getElementById('search-input')
 
 // Region dropwon
-const filteRegionDropdown = document.getElementById('search-filter')
+const filteRegionDropdown = document.getElementById('region-filter')
 
 // Array will hold all countries fetched from Api
 // Stored here so they can be filtered with out a new api call
@@ -62,7 +64,7 @@ filteRegionDropdown.addEventListener('change', updateCountryResults)
 
 
 //Should Read the search bar  value Lowercase and remove spaces in the search bar 
-function getsearchInput() {
+function getSearchInput() {
     return searchInput.value.toLowerCase().trim()
 }
 // Gets the value in the region dropdown
@@ -75,7 +77,7 @@ function getFilterInput() {
 function searchResults(countryData, searchQuery) { // Country data  full array of countries to search through 
     // and Searchquery the letters or words the user typed in search bar 
 
-    return countryData.filter(item => item.name.toLowerCase().includes(searchQuery))
+    return countryData.filter(item => item.name.common.toLowerCase().includes(searchQuery))
 }
 
 
@@ -103,17 +105,47 @@ function updateCountryResults() {
 
 }
 
-// Fetch all country data and kicks off the display country data 
+
+
+
+
+
+// Fetch all country data and kicks off the display country data //
 
 async function fetchCountries() {
-    const response = await fetch('data.json') // Stores Whatever comes back
-    const data = await response.json() // Should convert the response into a array
-    // Saves the full country list to the global array
-    allCountries = data
-    // pass the data to display Countries and should build and render the cards
-    displayCountries(data)
+    try {
+        const response = await fetch('https://restcountries.com/v3.1/all') // Stores Whatever comes back
+
+        // If Api returns an error status thoww so catch can handle it
+        if (!response.ok) {
+            throw new Error('Failed to fetch countries')
+
+            // Con vert raw reesponse into a ussable javascript array
+            const data = await response.json()
+
+            // Store the data in the all countries array so it can be filtered without new api calls
+            allCountries = data
+
+            // Display all countries on the page when it first loads
+            displayCountries(data)
+        }
+
+
+    } catch (error) {
+        // Show message if the Api fails to load the data for some reason
+        countryListContainer.innerHTML = '<p>Failed to load countries. Please try again later.</p>'
+        console.error('Error fetching countries:', error)
+    }
+
+
+
 
 }
+
+
+
+
+
 
 
 // Takes filtered searched array and renders card to the page 
@@ -128,16 +160,65 @@ function displayCountries(countriesData) {
         // Create a new button element in the dom
         const countryItem = document.createElement('button')
 
-        countryItem classList.add('country-item')
+        countryItem.classList.add('country-item')
 
         //Real data value directy into the Html 
         countryItem.innerHTML = `
-        <img src = '${country.flags.png}' alt  = 'Flag of ${country.name.common}'>
+        <img src = '${country.flags.png}' alt  = 'Flag of ${country.common}'>
         <div class = 'country-quick-info'>
-        <h2 class = 'country-name'>`
+        <h2 class = 'country-name'> ${country.common}</h2>
+        <p><strong>Population</strong>: ${country.population}</p>
+        <p><strong>Region</strong>: ${country.region}</p>
+        <p><strong>Capital</strong>: ${country.capital}</p>
+        </div>
+        
+        `
+
+        // hide the country list container and show the country details container when a country is clicked
+        countryItem.addEventListener('click', () => {
+            // Hide the country list container
+            countryListContainer.style.display = 'none'
+
+            // Show the country details container
+            document.getElementById('country-details-container').classList.add('show')
+
+            dispplayCountryDetails(country) // Pass the clicked country data to the details function
+
+
+
+
+
+        })
+
+        countryListContainer.appendChild(countryItem) // Add the new country card to the page
 
 
     })
+}
+
+// Display  Country Detaails //
+function dispplayCountryDetails(selectedCountry) {
+    const countryDetailsContainer = document.getElementById('country-details-container')
+
+
+    countryDetailsContainer.innerHTML = `
+    <button id = 'back-button' class="back-button">
+    <i class='ri-arrow-left-line'></i> Back </button>
+    <div class = 'country-details-wrapper'>
+        <img src = '${selectedCountry.flags.png}' alt  = 'Flag of ${selectedCountry.common}'>
+        <div class = 'detailed-info'>
+        <h2 class = 'country-name'> ${selectedCountry.common}</h2>
+        <p><strong>Population</strong>: ${selectedCountry.population}</p>
+        <p><strong>Region</strong>: ${selectedCountry.region}</p>
+        <p><strong>Capital</strong>: ${selectedCountry.capital}</p>
+
+    </div>`
 
 
 }
+
+
+searchInput.addEventListener('input', updateCountryResults)
+filteRegionDropdown.addEventListener('change', updateCountryResults)
+
+fetchCountries();
