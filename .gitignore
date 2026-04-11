@@ -38,3 +38,9 @@ npm-debug.log*
 *.pem
 .DS_Store
 Thumbs.db
+
+AGENTS.md
+CLAUDE.md
+README-template.md
+data.json
+style-guide.md
