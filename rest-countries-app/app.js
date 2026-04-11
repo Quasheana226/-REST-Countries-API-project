@@ -216,6 +216,17 @@ function dispplayCountryDetails(selectedCountry) {
         </div>
 
     </div>`
+
+    // Add event listener to the back button to return to the country list view
+    document.getElementById('back-button').addEventListener('click', () => {
+        // show country list container
+        countryListContainer.styyle.display = ''
+        // hide country details 
+        countryDetailsContainer.classList.remove('show')
+        //Clear Details
+        countryDetailsContainer.innerHTML = ''
+        
+    })
     
 
 
