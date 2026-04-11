@@ -8,10 +8,10 @@
     --bg: #f0f4ff;
     --nav-bg: #fff;
     --text-primary: #ffffff;
-    --text-secondary: #4a5568;
+    --text-secondary: #455878;
     --border: #e2e8f0;
-    --border-radius: 13px;
-    --shadow: 0 4px 20px rgba(37,99,235,0.1);
+    --border-radius: 999px;
+    --shadow: 0 4px 20px rgba(121, 161, 247, 0.1);
     --radius: 14px;
 
 
@@ -59,4 +59,26 @@ header {
     top: 0;
     z-index: 100;
 
+}
+
+nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.logo  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.dark-mode-btn {
+    background: #1e3a8a;
+    color: var(--text-primary);
+    border-radius: var(--border-radius);
+    font-family: 'rubik-distressed-regular', system-ui;
+    font-weight: 650;
+    font-size: medium;
 }
