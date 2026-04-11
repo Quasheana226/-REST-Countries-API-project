@@ -114,21 +114,23 @@ function updateCountryResults() {
 
 async function fetchCountries() {
     try {
-        const response = await fetch('https://restcountries.com/v3.1/all') // Stores Whatever comes back
+        const response = await fetch('https://restcountries.com/v3.1/all?fields=name,flags,population,region,capital') // Stores Whatever comes back
+        console.log(response.status)
 
         // If Api returns an error status thoww so catch can handle it
         if (!response.ok) {
             throw new Error('Failed to fetch countries')
-
-            // Con vert raw reesponse into a ussable javascript array
-            const data = await response.json()
-
-            // Store the data in the all countries array so it can be filtered without new api calls
-            allCountries = data
-
-            // Display all countries on the page when it first loads
-            displayCountries(data)
         }
+
+        // Con vert raw reesponse into a ussable javascript array
+        const data = await response.json()
+
+        // Store the data in the all countries array so it can be filtered without new api calls
+        allCountries = data
+
+        // Display all countries on the page when it first loads
+        displayCountries(data)
+
 
 
     } catch (error) {
@@ -164,9 +166,9 @@ function displayCountries(countriesData) {
 
         //Real data value directy into the Html 
         countryItem.innerHTML = `
-        <img src = '${country.flags.png}' alt  = 'Flag of ${country.common}'>
+        <img src = '${country.flags.png}' alt  = 'Flag of ${country.name.common}'>
         <div class = 'country-quick-info'>
-        <h2 class = 'country-name'> ${country.common}</h2>
+        <h2 class = 'country-name'> ${country.name.common}</h2>
         <p><strong>Population</strong>: ${country.population}</p>
         <p><strong>Region</strong>: ${country.region}</p>
         <p><strong>Capital</strong>: ${country.capital}</p>
@@ -205,20 +207,20 @@ function dispplayCountryDetails(selectedCountry) {
     <button id = 'back-button' class="back-button">
     <i class='ri-arrow-left-line'></i> Back </button>
     <div class = 'country-details-wrapper'>
-        <img src = '${selectedCountry.flags.png}' alt  = 'Flag of ${selectedCountry.common}'>
+        <img src = '${selectedCountry.flags.png}' alt  = 'Flag of ${selectedCountry.name.common}'>
         <div class = 'detailed-info'>
-        <h2 class = 'country-name'> ${selectedCountry.common}</h2>
+        <h2 class = 'country-name'> ${selectedCountry.name.common}</h2>
         <p><strong>Population</strong>: ${selectedCountry.population}</p>
         <p><strong>Region</strong>: ${selectedCountry.region}</p>
-        <p><strong>Capital</strong>: ${selectedCountry.capital}</p>
+        <p><strong>Capital</strong>: ${selectedCountry.capital?.[0]}</p>
+        </div>
 
     </div>`
+    
 
 
 }
 
 
-searchInput.addEventListener('input', updateCountryResults)
-filteRegionDropdown.addEventListener('change', updateCountryResults)
 
 fetchCountries();
