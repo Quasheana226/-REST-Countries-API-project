@@ -6,7 +6,7 @@
 
 :root{
     --bg: #f0f4ff;
-    --nav-bg: #fff;
+    --nav-bg: #92909095;
     --text-primary: #ffffff;
     --text-secondary: #455878;
     --border: #e2e8f0;
@@ -112,4 +112,20 @@ nav .container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
+}
+
+/*Individual Country Card */
+.country-item {
+    background-color: var(--nav-bg);
+    border: none;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    text-align: left;
+    overflow: hidden;
+    width: 100%;
+    color: var(--text-secondary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease   ;
+
+     
 }
